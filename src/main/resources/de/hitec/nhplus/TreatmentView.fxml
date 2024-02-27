@@ -68,12 +68,12 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="txtBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <TextField fx:id="txtEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <DatePicker fx:id="datepicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="lblPatientName" text="Name" GridPane.columnIndex="1" />
-            <Label fx:id="lblCarelevel" text="Pflegestufe" GridPane.columnIndex="3" />
+            <TextField fx:id="textFieldBegin" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldEnd" maxWidth="192.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="textFieldDescription" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <DatePicker fx:id="datePicker" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="labelPatientName" text="Name" GridPane.columnIndex="1" />
+            <Label fx:id="labelCareLevel" text="Pflegestufe" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <HBox layoutX="298.0" layoutY="237.0" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="50.0">
@@ -82,6 +82,6 @@
             <Button fx:id="btnCancel" layoutX="298.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleCancel" text="Abbruch" />
          </children>
       </HBox>
-      <TextArea fx:id="taRemarks" layoutX="50.0" layoutY="252.0" prefHeight="134.0" prefWidth="700.0" AnchorPane.topAnchor="265.0" />
+      <TextArea fx:id="textAreaRemarks" layoutX="50.0" layoutY="252.0" prefHeight="134.0" prefWidth="700.0" AnchorPane.topAnchor="265.0" />
    </children>
 </AnchorPane>

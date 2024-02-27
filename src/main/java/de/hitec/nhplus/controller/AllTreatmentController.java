@@ -24,22 +24,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllTreatmentController {
+
     @FXML
     private TableView<Treatment> tableView;
+
     @FXML
     private TableColumn<Treatment, Integer> columnId;
+
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
+
     @FXML
     private TableColumn<Treatment, String> columnDate;
+
     @FXML
     private TableColumn<Treatment, String> columnBegin;
+
     @FXML
     private TableColumn<Treatment, String> columnEnd;
+
     @FXML
     private TableColumn<Treatment, String> columnDescription;
+
     @FXML
     private ComboBox<String> comboBoxPatientSelection;
+
     @FXML
     private Button buttonDelete;
 
@@ -159,8 +168,7 @@ public class AllTreatmentController {
             String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
             Patient patient = searchInList(selectedPatient);
             newTreatmentWindow(patient);
-        }
-        catch(NullPointerException e){
+        } catch (NullPointerException e){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Patient für die Behandlung fehlt!");

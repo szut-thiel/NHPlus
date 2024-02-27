@@ -2,7 +2,6 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
-import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,37 +24,52 @@ import java.time.LocalDate;
  * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
  */
 public class AllPatientController {
+
     @FXML
     private TableView<Patient> tableView;
+
     @FXML
     private TableColumn<Patient, Integer> columnId;
+
     @FXML
     private TableColumn<Patient, String> columnFirstName;
+
     @FXML
     private TableColumn<Patient, String> columnSurname;
+
     @FXML
     private TableColumn<Patient, String> columnDateOfBirth;
+
     @FXML
     private TableColumn<Patient, String> columnCareLevel;
+
     @FXML
     private TableColumn<Patient, String> columnRoomNumber;
+
     @FXML
     private TableColumn<Patient, String> columnAssets;
 
     @FXML
-    Button buttonDelete;
+    private Button buttonDelete;
+
     @FXML
-    Button buttonAdd;
+    private Button buttonAdd;
+
     @FXML
-    TextField textFieldSurname;
+    private TextField textFieldSurname;
+
     @FXML
-    TextField textFieldFirstName;
+    private TextField textFieldFirstName;
+
     @FXML
-    TextField textFieldDateOfBirth;
+    private TextField textFieldDateOfBirth;
+
     @FXML
-    TextField textFieldCareLevel;
+    private TextField textFieldCareLevel;
+
     @FXML
-    TextField textFieldRoomNumber;
+    private TextField textFieldRoomNumber;
+
     @FXML
     private TextField textFieldAssets;
 
@@ -102,6 +116,16 @@ public class AllPatientController {
                 AllPatientController.this.buttonDelete.setDisable(newPatient == null);
             }
         });
+
+        this.buttonAdd.setDisable(true);
+        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
+                AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
+        this.textFieldSurname.textProperty().addListener(inputNewPatientListener);
+        this.textFieldFirstName.textProperty().addListener(inputNewPatientListener);
+        this.textFieldDateOfBirth.textProperty().addListener(inputNewPatientListener);
+        this.textFieldCareLevel.textProperty().addListener(inputNewPatientListener);
+        this.textFieldRoomNumber.textProperty().addListener(inputNewPatientListener);
+        this.textFieldAssets.textProperty().addListener(inputNewPatientListener);
     }
 
     /**
@@ -248,5 +272,19 @@ public class AllPatientController {
         this.textFieldCareLevel.clear();
         this.textFieldRoomNumber.clear();
         this.textFieldAssets.clear();
+    }
+
+    private boolean areInputDataValid() {
+        if (!this.textFieldDateOfBirth.getText().isBlank()) {
+            try {
+                DateConverter.convertStringToLocalDate(this.textFieldDateOfBirth.getText());
+            } catch (Exception exception) {
+                return false;
+            }
+        }
+
+        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
+                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() &&
+                !this.textFieldRoomNumber.getText().isBlank() && !this.textFieldAssets.getText().isBlank();
     }
 }

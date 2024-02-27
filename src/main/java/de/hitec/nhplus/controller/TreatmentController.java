@@ -14,24 +14,27 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class TreatmentController {
+
     @FXML
-    private Label lblPatientName;
+    private Label labelPatientName;
+
     @FXML
-    private Label lblCarelevel;
+    private Label labelCareLevel;
+
     @FXML
-    private TextField txtBegin;
+    private TextField textFieldBegin;
+
     @FXML
-    private TextField txtEnd;
+    private TextField textFieldEnd;
+
     @FXML
-    private TextField txtDescription;
+    private TextField textFieldDescription;
+
     @FXML
-    private TextArea taRemarks;
+    private TextArea textAreaRemarks;
+
     @FXML
-    private DatePicker datepicker;
-    @FXML
-    private Button btnChange;
-    @FXML
-    private Button btnCancel;
+    private DatePicker datePicker;
 
     private AllTreatmentController controller;
     private Stage stage;
@@ -46,29 +49,29 @@ public class TreatmentController {
             this.patient = pDao.read((int) treatment.getPid());
             this.treatment = treatment;
             showData();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
     private void showData(){
-        this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
-        this.lblCarelevel.setText(patient.getCareLevel());
+        this.labelPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
+        this.labelCareLevel.setText(patient.getCareLevel());
         LocalDate date = DateConverter.convertStringToLocalDate(treatment.getDate());
-        this.datepicker.setValue(date);
-        this.txtBegin.setText(this.treatment.getBegin());
-        this.txtEnd.setText(this.treatment.getEnd());
-        this.txtDescription.setText(this.treatment.getDescription());
-        this.taRemarks.setText(this.treatment.getRemarks());
+        this.datePicker.setValue(date);
+        this.textFieldBegin.setText(this.treatment.getBegin());
+        this.textFieldEnd.setText(this.treatment.getEnd());
+        this.textFieldDescription.setText(this.treatment.getDescription());
+        this.textAreaRemarks.setText(this.treatment.getRemarks());
     }
 
     @FXML
     public void handleChange(){
-        this.treatment.setDate(this.datepicker.getValue().toString());
-        this.treatment.setBegin(txtBegin.getText());
-        this.treatment.setEnd(txtEnd.getText());
-        this.treatment.setDescription(txtDescription.getText());
-        this.treatment.setRemarks(taRemarks.getText());
+        this.treatment.setDate(this.datePicker.getValue().toString());
+        this.treatment.setBegin(textFieldBegin.getText());
+        this.treatment.setEnd(textFieldEnd.getText());
+        this.treatment.setDescription(textFieldDescription.getText());
+        this.treatment.setRemarks(textAreaRemarks.getText());
         doUpdate();
         controller.readAllAndShowInTableView();
         stage.close();
@@ -78,8 +81,8 @@ public class TreatmentController {
         TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             dao.update(treatment);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
