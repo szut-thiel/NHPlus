@@ -15,7 +15,7 @@ public class ConnectionBuilder {
     private static Connection connection;
 
     public static void setUp() {
-        SetUpDB.setUpDB();
+        SetUpDB.setUpDb();
     }
 
     synchronized public static Connection getConnection() {

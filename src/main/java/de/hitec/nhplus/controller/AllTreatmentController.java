@@ -4,8 +4,6 @@ import de.hitec.nhplus.Main;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,7 +19,6 @@ import de.hitec.nhplus.model.Treatment;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AllTreatmentController {
 
@@ -62,41 +59,35 @@ public class AllTreatmentController {
         comboBoxPatientSelection.setItems(patientSelection);
         comboBoxPatientSelection.getSelectionModel().select(0);
 
-        this.columnId.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("tid"));
-        this.columnPid.setCellValueFactory(new PropertyValueFactory<Treatment, Integer>("pid"));
-        this.columnDate.setCellValueFactory(new PropertyValueFactory<Treatment, String>("date"));
-        this.columnBegin.setCellValueFactory(new PropertyValueFactory<Treatment, String>("begin"));
-        this.columnEnd.setCellValueFactory(new PropertyValueFactory<Treatment, String>("end"));
-        this.columnDescription.setCellValueFactory(new PropertyValueFactory<Treatment, String>("description"));
+        this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
+        this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
+        this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
+        this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+        this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         this.tableView.setItems(this.treatments);
 
+        // Disabling the button to delete treatments as long, as no treatment was selected.
         this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Treatment>() {
-            @Override
-            public void changed(ObservableValue<? extends Treatment> observableValue,
-                                Treatment oldTreatment, Treatment newTreatment) {;
-                AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null);
-            }
-        });
-        createComboBoxData();
+        this.tableView.getSelectionModel().selectedItemProperty().addListener(
+                (observableValue, oldTreatment, newTreatment) ->
+                        AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
+
+        this.createComboBoxData();
     }
 
     public void readAllAndShowInTableView() {
         this.treatments.clear();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
-        List<Treatment> allTreatments;
         try {
-            allTreatments = dao.readAll();
-            for (Treatment treatment : allTreatments) {
-                this.treatments.add(treatment);
-            }
+            this.treatments.addAll(dao.readAll());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
-    private void createComboBoxData(){
+    private void createComboBoxData() {
         PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
         try {
             patientList = (ArrayList<Patient>) dao.readAll();
@@ -104,44 +95,37 @@ public class AllTreatmentController {
             for (Patient patient: patientList) {
                 this.patientSelection.add(patient.getSurname());
             }
-        }catch(SQLException exception){
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
 
 
     @FXML
-    public void handleComboBox(){
+    public void handleComboBox() {
         String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
         this.treatments.clear();
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
 
-        List<Treatment> allTreatments;
-        if (selectedPatient.equals("alle")){
+        if (selectedPatient.equals("alle")) {
             try {
-                allTreatments= this.dao.readAll();
-                for (Treatment treatment : allTreatments) {
-                    this.treatments.add(treatment);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                this.treatments.addAll(this.dao.readAll());
+            } catch (SQLException exception) {
+                exception.printStackTrace();
             }
         }
 
         Patient patient = searchInList(selectedPatient);
-        if (patient !=null){
+        if (patient !=null) {
             try {
-                allTreatments = this.dao.readTreatmentsByPid(patient.getPid());
-                for (Treatment treatment : allTreatments) {
-                    this.treatments.add(treatment);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                this.treatments.addAll(this.dao.readTreatmentsByPid(patient.getPid()));
+            } catch (SQLException exception) {
+                exception.printStackTrace();
             }
         }
     }
 
-    private Patient searchInList(String surname){
+    private Patient searchInList(String surname) {
         for (Patient patient : this.patientList) {
             if (patient.getSurname().equals(surname)) {
                 return patient;
@@ -151,7 +135,7 @@ public class AllTreatmentController {
     }
 
     @FXML
-    public void handleDelete(){
+    public void handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.treatments.remove(index);
         TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
@@ -168,7 +152,7 @@ public class AllTreatmentController {
             String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
             Patient patient = searchInList(selectedPatient);
             newTreatmentWindow(patient);
-        } catch (NullPointerException e){
+        } catch (NullPointerException exception){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Patient für die Behandlung fehlt!");
@@ -178,7 +162,7 @@ public class AllTreatmentController {
     }
 
     @FXML
-    public void handleMouseClick(){
+    public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && (tableView.getSelectionModel().getSelectedItem() != null)) {
                 int index = this.tableView.getSelectionModel().getSelectedIndex();
@@ -188,7 +172,7 @@ public class AllTreatmentController {
         });
     }
 
-    public void newTreatmentWindow(Patient patient){
+    public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/NewTreatmentView.fxml"));
             AnchorPane pane = loader.load();
@@ -217,7 +201,6 @@ public class AllTreatmentController {
             // the primary stage should stay in the background
             Stage stage = new Stage();
             TreatmentController controller = loader.getController();
-
             controller.initializeController(this, stage, treatment);
 
             stage.setScene(scene);

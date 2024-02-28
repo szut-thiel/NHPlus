@@ -80,7 +80,6 @@ public class Treatment {
 
     public void setDate(String date) {
         this.date = DateConverter.convertStringToLocalDate(date);
-        ;
     }
 
     public void setBegin(String begin) {

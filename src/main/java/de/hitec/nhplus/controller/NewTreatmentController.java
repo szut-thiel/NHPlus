@@ -58,7 +58,7 @@ public class NewTreatmentController {
         this.textFieldDescription.textProperty().addListener(inputNewPatientListener);
         this.textAreaRemarks.textProperty().addListener(inputNewPatientListener);
         this.datePicker.valueProperty().addListener((observableValue, localDate, t1) -> NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid()));
-        this.datePicker.setConverter(new StringConverter<LocalDate>() {
+        this.datePicker.setConverter(new StringConverter<>() {
             @Override
             public String toString(LocalDate localDate) {
                 return (localDate == null) ? "" : DateConverter.convertLocalDateToString(localDate);

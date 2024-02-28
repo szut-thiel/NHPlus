@@ -3,8 +3,8 @@ package de.hitec.nhplus.model;
 import javafx.beans.property.SimpleStringProperty;
 
 public abstract class Person {
-    private SimpleStringProperty firstName;
-    private SimpleStringProperty surname;
+    private final SimpleStringProperty firstName;
+    private final SimpleStringProperty surname;
 
     public Person(String firstName, String surname) {
         this.firstName = new SimpleStringProperty(firstName);

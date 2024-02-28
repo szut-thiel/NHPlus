@@ -1,14 +1,13 @@
 package de.hitec.nhplus;
 
 import de.hitec.nhplus.datastorage.ConnectionBuilder;
+
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -33,17 +32,13 @@ public class Main extends Application {
             this.primaryStage.setResizable(false);
             this.primaryStage.show();
 
-            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent e) {
-                    ConnectionBuilder.closeConnection();
-                    Platform.exit();
-                    System.exit(0);
-                }
+            this.primaryStage.setOnCloseRequest(event -> {
+                ConnectionBuilder.closeConnection();
+                Platform.exit();
+                System.exit(0);
             });
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
