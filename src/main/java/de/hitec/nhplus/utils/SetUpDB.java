@@ -73,7 +73,7 @@ public class SetUpDB {
                 "   end TEXT NOT NULL, " +
                 "   description TEXT NOT NULL, " +
                 "   remark TEXT NOT NULL," +
-                "   FOREIGN KEY (pid) REFERENCES patient (pid) " +
+                "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE " +
                 ");";
 
         try (Statement statement = connection.createStatement()) {

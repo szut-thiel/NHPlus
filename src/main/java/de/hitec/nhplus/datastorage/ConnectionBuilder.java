@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import de.hitec.nhplus.utils.SetUpDB;
 import org.sqlite.SQLiteConfig;
 
 public class ConnectionBuilder {
@@ -13,10 +12,6 @@ public class ConnectionBuilder {
     private static final String URL = "jdbc:sqlite:db/" + DB_NAME;
 
     private static Connection connection;
-
-    public static void setUp() {
-        SetUpDB.setUpDb();
-    }
 
     synchronized public static Connection getConnection() {
         try {
